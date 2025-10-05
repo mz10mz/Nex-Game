@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>NexGame Casino - Mobile</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Mobile-specific styles */
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .mobile-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 0.5rem;
+        }
+        
+        .mobile-controls {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 1rem;
+        }
+        
+        .mobile-game-area {
+            margin-top: 60px;
+            margin-bottom: 120px;
+            padding: 1rem;
+        }
+        
+        .mobile-reels {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+        
+        .mobile-reel {
+            width: 60px;
+            height: 180px;
+            background: linear-gradient(180deg, #1a1a2e, #16213e);
+            border: 2px solid #ffd700;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .mobile-symbol {
+            width: 100%;
+            height: 60px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .mobile-spin-btn {
+            background: linear-gradient(45deg, #27ae60, #2ecc71);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            margin: 0.5rem 0;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .mobile-spin-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .mobile-bet-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 1rem 0;
+            padding: 0.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .mobile-bet-btn {
+            width: 50px;
+            height: 50px;
+            border: none;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .mobile-bet-btn:active {
+            transform: scale(0.9);
+        }
+        
+        .mobile-bet-display {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #ffd700;
+        }
+        
+        .mobile-balance {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 215, 0, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            border: 1px solid #ffd700;
+            margin: 0.5rem 0;
+        }
+        
+        .mobile-balance i {
+            color: #ffd700;
+            font-size: 1.2rem;
+        }
+        
+        .mobile-balance span {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .mobile-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+        
+        .mobile-stat {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.5rem;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            text-align: center;
+        }
+        
+        .mobile-stat-label {
+            font-size: 0.8rem;
+            color: #bdc3c7;
+            margin-bottom: 0.25rem;
+        }
+        
+        .mobile-stat-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #ffd700;
+        }
+        
+        .mobile-auto-btn {
+            background: linear-gradient(45deg, #8e44ad, #9b59b6);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            margin: 0.5rem 0;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .mobile-auto-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .mobile-auto-btn.active {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+        }
+        
+        /* Gesture hints */
+        .gesture-hint {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            z-index: 2000;
+            display: none;
+        }
+        
+        .gesture-hint.show {
+            display: block;
+            animation: fadeInOut 2s ease-in-out;
+        }
+        
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+        }
+        
+        /* Loading screen */
+        .mobile-loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            z-index: 3000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        
+        .mobile-loading.hidden {
+            display: none;
+        }
+        
+        .mobile-loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 215, 0, 0.3);
+            border-top: 4px solid #ffd700;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .mobile-loading p {
+            color: #ffd700;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="mobileLoading" class="mobile-loading">
+        <div class="mobile-loading-spinner"></div>
+        <p>جاري تحميل اللعبة...</p>
+    </div>
+
+    <!-- Header -->
+    <div class="mobile-header">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <i class="fas fa-gem" style="color: #ffd700; font-size: 1.5rem;"></i>
+                <h1 style="font-size: 1.2rem; margin: 0; color: #ffd700;">NexGame Casino</h1>
+            </div>
+            <div class="mobile-balance">
+                <i class="fas fa-coins"></i>
+                <span id="mobileBalance">1000</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Area -->
+    <div class="mobile-game-area">
+        <!-- Stats -->
+        <div class="mobile-stats">
+            <div class="mobile-stat">
+                <div class="mobile-stat-label">الرهان</div>
+                <div class="mobile-stat-value" id="mobileCurrentBet">10</div>
+            </div>
+            <div class="mobile-stat">
+                <div class="mobile-stat-label">الفوز الأخير</div>
+                <div class="mobile-stat-value" id="mobileLastWin">0</div>
+            </div>
+        </div>
+
+        <!-- Reels -->
+        <div class="mobile-reels">
+            <div class="mobile-reel" id="mobileReel1">
+                <div class="mobile-symbol"></div>
+                <div class="mobile-symbol"></div>
+                <div class="mobile-symbol"></div>
+            </div>
+            <div class="mobile-reel" id="mobileReel2">
+                <div class="mobile-symbol"></div>
+                <div class="mobile-symbol"></div>
+                <div class="mobile-symbol"></div>
+            </div>
+            <div class="mobile-reel" id="mobileReel3">
+                <div class="mobile-symbol"></div>
+                <div class="mobile-symbol"></div>
+                <div class="mobile-symbol"></div>
+            </div>
+            <div class="mobile-reel" id="mobileReel4">
+                <div class="mobile-symbol"></div>
+                <div class="mobile-symbol"></div>
+                <div class="mobile-symbol"></div>
+            </div>
+            <div class="mobile-reel" id="mobileReel5">
+                <div class="mobile-symbol"></div>
+                <div class="mobile-symbol"></div>
+                <div class="mobile-symbol"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="mobile-controls">
+        <!-- Bet Controls -->
+        <div class="mobile-bet-controls">
+            <button class="mobile-bet-btn" id="mobileBetDown">
+                <i class="fas fa-minus"></i>
+            </button>
+            <div class="mobile-bet-display">
+                <span id="mobileBetAmount">10</span>
+                <span style="color: #bdc3c7;">$</span>
+            </div>
+            <button class="mobile-bet-btn" id="mobileBetUp">
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
+
+        <!-- Spin Button -->
+        <button class="mobile-spin-btn" id="mobileSpinBtn">
+            <i class="fas fa-play"></i>
+            <span>دوران</span>
+        </button>
+
+        <!-- Auto Spin -->
+        <button class="mobile-auto-btn" id="mobileAutoBtn">
+            <i class="fas fa-sync"></i>
+            <span>دوران تلقائي</span>
+        </button>
+    </div>
+
+    <!-- Gesture Hint -->
+    <div class="gesture-hint" id="gestureHint">
+        <div>👆 مسح لأعلى: دوران</div>
+        <div>👈 مسح لليسار: زيادة الرهان</div>
+        <div>👉 مسح لليمين: تقليل الرهان</div>
+    </div>
+
+    <script>
+        // Mobile Game Logic
+        class MobileGame {
+            constructor() {
+                this.symbols = [
+                    { name: 'blue_gem', value: 1, image: 'assets/blue_gem.PNG' },
+                    { name: 'green_gem', value: 2, image: 'assets/green_gem.PNG' },
+                    { name: 'purple_gem', value: 3, image: 'assets/purple_gem.PNG' },
+                    { name: 'red_gem', value: 4, image: 'assets/red_gem.PNG' },
+                    { name: 'ring', value: 5, image: 'assets/ring.PNG' },
+                    { name: 'cup', value: 6, image: 'assets/cup.PNG' },
+                    { name: 'crown', value: 7, image: 'assets/crown.PNG' },
+                    { name: 'scatter', value: 8, image: 'assets/scatter.PNG' }
+                ];
+                
+                this.gameState = {
+                    balance: 1000,
+                    currentBet: 10,
+                    lastWin: 0,
+                    isSpinning: false,
+                    autoSpin: false,
+                    // Free Spins System
+                    freeSpinsActive: false,
+                    freeSpinsRemaining: 0,
+                    freeSpinsTotal: 0,
+                    freeSpinsWinnings: 0,
+                    freeSpinsBet: 0
+                };
+                
+                this.currentReels = [[], [], [], [], []];
+                this.init();
+            }
+            
+            init() {
+                this.setupEventListeners();
+                this.generateSpinResult();
+                this.updateDisplay();
+                this.hideLoading();
+            }
+            
+            setupEventListeners() {
+                // Spin button
+                document.getElementById('mobileSpinBtn').addEventListener('click', () => this.spin());
+                
+                // Bet controls
+                document.getElementById('mobileBetUp').addEventListener('click', () => this.increaseBet());
+                document.getElementById('mobileBetDown').addEventListener('click', () => this.decreaseBet());
+                
+                // Auto spin
+                document.getElementById('mobileAutoBtn').addEventListener('click', () => this.toggleAutoSpin());
+                
+                // Touch gestures
+                this.setupTouchGestures();
+            }
+            
+            setupTouchGestures() {
+                let touchStartX = 0;
+                let touchStartY = 0;
+                
+                document.addEventListener('touchstart', (e) => {
+                    touchStartX = e.touches[0].clientX;
+                    touchStartY = e.touches[0].clientY;
+                });
+                
+                document.addEventListener('touchend', (e) => {
+                    const touchEndX = e.changedTouches[0].clientX;
+                    const touchEndY = e.changedTouches[0].clientY;
+                    
+                    const deltaX = touchEndX - touchStartX;
+                    const deltaY = touchEndY - touchStartY;
+                    
+                    // مسح لأعلى - دوران
+                    if (Math.abs(deltaY) > Math.abs(deltaX) && deltaY < -50) {
+                        if (!this.gameState.isSpinning) {
+                            this.spin();
+                            this.showGestureHint('دوران!');
+                        }
+                    }
+                    
+                    // مسح لليسار - زيادة الرهان
+                    if (Math.abs(deltaX) > Math.abs(deltaY) && deltaX > 50) {
+                        this.increaseBet();
+                        this.showGestureHint('زيادة الرهان!');
+                    }
+                    
+                    // مسح لليمين - تقليل الرهان
+                    if (Math.abs(deltaX) > Math.abs(deltaY) && deltaX < -50) {
+                        this.decreaseBet();
+                        this.showGestureHint('تقليل الرهان!');
+                    }
+                });
+            }
+            
+            showGestureHint(message) {
+                const hint = document.getElementById('gestureHint');
+                hint.innerHTML = `<div>${message}</div>`;
+                hint.classList.add('show');
+                setTimeout(() => {
+                    hint.classList.remove('show');
+                }, 2000);
+            }
+            
+            generateRandomSymbol() {
+                return this.symbols[Math.floor(Math.random() * this.symbols.length)];
+            }
+            
+            generateSpinResult() {
+                this.currentReels = [[], [], [], [], []];
+                
+                for (let reelIndex = 0; reelIndex < 5; reelIndex++) {
+                    for (let rowIndex = 0; rowIndex < 3; rowIndex++) {
+                        const symbol = this.generateRandomSymbol();
+                        this.currentReels[reelIndex][rowIndex] = symbol;
+                    }
+                }
+                
+                this.displayReels();
+            }
+            
+            displayReels() {
+                for (let reelIndex = 0; reelIndex < 5; reelIndex++) {
+                    const reelElement = document.getElementById(`mobileReel${reelIndex + 1}`);
+                    const symbols = reelElement.querySelectorAll('.mobile-symbol');
+                    
+                    symbols.forEach((symbolElement, rowIndex) => {
+                        const symbol = this.currentReels[reelIndex][rowIndex];
+                        symbolElement.style.backgroundImage = `url(${symbol.image})`;
+                        symbolElement.style.backgroundSize = 'contain';
+                        symbolElement.style.backgroundRepeat = 'no-repeat';
+                        symbolElement.style.backgroundPosition = 'center';
+                    });
+                }
+            }
+            
+            spin() {
+                if (this.gameState.isSpinning || this.gameState.balance < this.gameState.currentBet || this.gameState.freeSpinsActive) {
+                    return;
+                }
+                
+                this.gameState.isSpinning = true;
+                this.gameState.balance -= this.gameState.currentBet;
+                
+                this.updateDisplay();
+                this.startReelAnimation();
+                
+                setTimeout(() => {
+                    this.generateSpinResult();
+                    this.checkWins();
+                    this.gameState.isSpinning = false;
+                    this.updateDisplay();
+                    
+                    if (this.gameState.autoSpin && this.gameState.balance >= this.gameState.currentBet) {
+                        setTimeout(() => this.spin(), 1000);
+                    }
+                }, 2000);
+            }
+            
+            startReelAnimation() {
+                const reels = document.querySelectorAll('.mobile-reel');
+                reels.forEach((reel, index) => {
+                    const symbols = reel.querySelectorAll('.mobile-symbol');
+                    symbols.forEach(symbol => {
+                        symbol.style.animation = 'reelSpin 0.2s linear infinite';
+                    });
+                    
+                    setTimeout(() => {
+                        symbols.forEach(symbol => {
+                            symbol.style.animation = 'none';
+                        });
+                    }, 1500 + (index * 100));
+                    });
+            }
+            
+            checkWins() {
+                // فحص Scatter للجولات المجانية
+                const scatterResult = this.checkScatterWin();
+                
+                // فحص الجولات المجانية (4+ Scatter)
+                if (scatterResult.count >= 4 && !this.gameState.freeSpinsActive) {
+                    this.triggerFreeSpins();
+                    return;
+                }
+                
+                // Simple win check - you can expand this
+                const win = Math.random() < 0.3 ? this.gameState.currentBet * 2 : 0;
+                
+                if (win > 0) {
+                    this.gameState.lastWin = win;
+                    
+                    // في الجولات المجانية، لا نخصم من الرصيد ولا نضيف إليه حتى النهاية
+                    if (!this.gameState.freeSpinsActive) {
+                        this.gameState.balance += win;
+                    } else {
+                        // جمع أرباح الجولات المجانية
+                        this.gameState.freeSpinsWinnings += win;
+                    }
+                    
+                    this.showGestureHint(`فزت! $${win}`);
+                } else {
+                    this.gameState.lastWin = 0;
+                }
+            }
+            
+            checkScatterWin() {
+                let scatterCount = 0;
+                
+                for (let reelIndex = 0; reelIndex < 5; reelIndex++) {
+                    for (let rowIndex = 0; rowIndex < 3; rowIndex++) {
+                        if (this.currentReels[reelIndex][rowIndex].name === 'scatter') {
+                            scatterCount++;
+                        }
+                    }
+                }
+                
+                return { count: scatterCount, win: 0 };
+            }
+            
+            triggerFreeSpins() {
+                this.gameState.freeSpinsActive = true;
+                this.gameState.freeSpinsRemaining = 15;
+                this.gameState.freeSpinsTotal = 15;
+                this.gameState.freeSpinsWinnings = 0;
+                this.gameState.freeSpinsBet = this.gameState.currentBet;
+                
+                this.showGestureHint('🎉 جولات مجانية!');
+                
+                setTimeout(() => {
+                    this.startFreeSpins();
+                }, 2000);
+            }
+            
+            startFreeSpins() {
+                if (this.gameState.freeSpinsRemaining > 0) {
+                    this.gameState.freeSpinsRemaining--;
+                    
+                    this.gameState.isSpinning = true;
+                    this.updateDisplay();
+                    this.startReelAnimation();
+                    
+                    setTimeout(() => {
+                        this.generateSpinResult();
+                        this.checkWins();
+                        this.gameState.isSpinning = false;
+                        this.updateDisplay();
+                        
+                        if (this.gameState.freeSpinsRemaining > 0) {
+                            setTimeout(() => this.startFreeSpins(), 2000);
+                        } else {
+                            this.endFreeSpins();
+                        }
+                    }, 2000);
+                }
+            }
+            
+            endFreeSpins() {
+                this.gameState.balance += this.gameState.freeSpinsWinnings;
+                this.showGestureHint(`🎊 انتهت الجولات المجانية! إجمالي: $${this.gameState.freeSpinsWinnings}`);
+                
+                this.gameState.freeSpinsActive = false;
+                this.gameState.freeSpinsRemaining = 0;
+                this.gameState.freeSpinsTotal = 0;
+                this.gameState.freeSpinsWinnings = 0;
+                this.gameState.freeSpinsBet = 0;
+                
+                this.updateDisplay();
+            }
+            
+            increaseBet() {
+                const betAmounts = [5, 10, 25, 50, 100, 250, 500, 1000];
+                const currentIndex = betAmounts.indexOf(this.gameState.currentBet);
+                
+                if (currentIndex < betAmounts.length - 1) {
+                    this.gameState.currentBet = betAmounts[currentIndex + 1];
+                    this.updateDisplay();
+                }
+            }
+            
+            decreaseBet() {
+                const betAmounts = [5, 10, 25, 50, 100, 250, 500, 1000];
+                const currentIndex = betAmounts.indexOf(this.gameState.currentBet);
+                
+                if (currentIndex > 0) {
+                    this.gameState.currentBet = betAmounts[currentIndex - 1];
+                    this.updateDisplay();
+                }
+            }
+            
+            toggleAutoSpin() {
+                this.gameState.autoSpin = !this.gameState.autoSpin;
+                const autoBtn = document.getElementById('mobileAutoBtn');
+                
+                if (this.gameState.autoSpin) {
+                    autoBtn.classList.add('active');
+                    autoBtn.innerHTML = '<i class="fas fa-stop"></i><span>إيقاف التلقائي</span>';
+                } else {
+                    autoBtn.classList.remove('active');
+                    autoBtn.innerHTML = '<i class="fas fa-sync"></i><span>دوران تلقائي</span>';
+                }
+            }
+            
+            updateDisplay() {
+                document.getElementById('mobileBalance').textContent = this.gameState.balance.toLocaleString();
+                document.getElementById('mobileCurrentBet').textContent = this.gameState.currentBet;
+                document.getElementById('mobileBetAmount').textContent = this.gameState.currentBet;
+                document.getElementById('mobileLastWin').textContent = this.gameState.lastWin.toLocaleString();
+                
+                const spinBtn = document.getElementById('mobileSpinBtn');
+                spinBtn.disabled = this.gameState.balance < this.gameState.currentBet || this.gameState.isSpinning || this.gameState.freeSpinsActive;
+                
+                // تحديث نص زر الدوران أثناء الجولات المجانية
+                if (this.gameState.freeSpinsActive) {
+                    spinBtn.innerHTML = '<i class="fas fa-lock"></i><span>جولات مجانية</span>';
+                } else {
+                    spinBtn.innerHTML = '<i class="fas fa-play"></i><span>دوران</span>';
+                }
+            }
+            
+            hideLoading() {
+                setTimeout(() => {
+                    document.getElementById('mobileLoading').classList.add('hidden');
+                }, 2000);
+            }
+        }
+        
+        // Initialize game
+        document.addEventListener('DOMContentLoaded', () => {
+            window.mobileGame = new MobileGame();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexGame Casino - Professional Slot Machine Game</title>
+    <meta name="description" content="Professional casino slot machine game with advanced RNG system, free spins, and admin controls. Play now!">
+    <meta name="keywords" content="casino, slot machine, game, RNG, free spins, admin panel, mobile">
+    <meta name="author" content="NexGame Development Team">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="NexGame Casino - Professional Slot Machine Game">
+    <meta property="og:description" content="Professional casino slot machine game with advanced RNG system, free spins, and admin controls.">
+    <meta property="og:image" content="https://yourusername.github.io/nexgame-casino/assets/crown.PNG">
+    <meta property="og:url" content="https://yourusername.github.io/nexgame-casino/">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="NexGame Casino - Professional Slot Machine Game">
+    <meta name="twitter:description" content="Professional casino slot machine game with advanced RNG system, free spins, and admin controls.">
+    <meta name="twitter:image" content="https://yourusername.github.io/nexgame-casino/assets/crown.PNG">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/crown.PNG">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Analytics (Optional) -->
+    <!-- Google Analytics -->
+    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'GA_MEASUREMENT_ID');
+    </script> -->
+</head>
+<body>
+    <!-- Header -->
+    <header class="game-header">
+        <div class="logo">
+            <i class="fas fa-gem"></i>
+            <h1>NexGame Casino</h1>
+        </div>
+        <div class="balance-info">
+            <div class="balance">
+                <i class="fas fa-coins"></i>
+                <span id="balance">1000</span>
+            </div>
+            <div class="admin-toggle">
+                <button id="adminBtn" class="admin-btn">
+                    <i class="fas fa-cog"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Admin Panel -->
+    <div id="adminPanel" class="admin-panel hidden">
+        <div class="admin-content">
+            <h3>Admin Control Panel</h3>
+            <div class="admin-controls">
+                <div class="control-group">
+                    <label for="winRate">Win Rate (%)</label>
+                    <input type="number" id="winRate" min="0" max="100" value="30">
+                </div>
+                <div class="control-group">
+                    <label for="jackpotRate">Jackpot Rate (%)</label>
+                    <input type="number" id="jackpotRate" min="0" max="10" value="2">
+                </div>
+                <div class="control-group">
+                    <label for="houseEdge">House Edge (%)</label>
+                    <input type="number" id="houseEdge" min="0" max="50" value="5">
+                </div>
+                <button id="applySettings" class="apply-btn">Apply Settings</button>
+                <button id="resetSettings" class="reset-btn">Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Game Area -->
+    <main class="game-container">
+        <!-- Game Stats -->
+        <div class="game-stats">
+            <div class="stat-item">
+                <span class="stat-label">Bet</span>
+                <span id="currentBet" class="stat-value">10</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Last Win</span>
+                <span id="lastWin" class="stat-value">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Total Wins</span>
+                <span id="totalWins" class="stat-value">0</span>
+            </div>
+        </div>
+
+        <!-- Free Spins Display -->
+        <div id="freeSpinsDisplay" class="free-spins-display hidden">
+            <div class="free-spins-content">
+                <i class="fas fa-gift"></i>
+                <span id="freeSpinsText">Free Spins: 0/0</span>
+            </div>
+        </div>
+
+        <!-- Slot Machine -->
+        <div class="slot-machine">
+            <div class="reels-container">
+                <div class="reel" id="reel1">
+                    <div class="symbol"></div>
+                    <div class="symbol"></div>
+                    <div class="symbol"></div>
+                </div>
+                <div class="reel" id="reel2">
+                    <div class="symbol"></div>
+                    <div class="symbol"></div>
+                    <div class="symbol"></div>
+                </div>
+                <div class="reel" id="reel3">
+                    <div class="symbol"></div>
+                    <div class="symbol"></div>
+                    <div class="symbol"></div>
+                </div>
+                <div class="reel" id="reel4">
+                    <div class="symbol"></div>
+                    <div class="symbol"></div>
+                    <div class="symbol"></div>
+                </div>
+                <div class="reel" id="reel5">
+                    <div class="symbol"></div>
+                    <div class="symbol"></div>
+                    <div class="symbol"></div>
+                </div>
+            </div>
+            
+            <!-- Paylines -->
+            <div class="paylines">
+                <div class="payline" id="payline1"></div>
+                <div class="payline" id="payline2"></div>
+                <div class="payline" id="payline3"></div>
+                <div class="payline" id="payline4"></div>
+                <div class="payline" id="payline5"></div>
+                <div class="payline" id="payline6"></div>
+                <div class="payline" id="payline7"></div>
+                <div class="payline" id="payline8"></div>
+                <div class="payline" id="payline9"></div>
+            </div>
+        </div>
+
+        <!-- Control Panel -->
+        <div class="control-panel">
+            <div class="bet-controls">
+                <button id="betDown" class="bet-btn">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <div class="bet-display">
+                    <span id="betAmount">10</span>
+                    <span class="currency">$</span>
+                </div>
+                <button id="betUp" class="bet-btn">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+            
+            <button id="spinBtn" class="spin-btn">
+                <i class="fas fa-play"></i>
+                <span>Spin</span>
+            </button>
+            
+            <div class="auto-spin">
+                <button id="autoSpinBtn" class="auto-btn">
+                    <i class="fas fa-sync"></i>
+                    <span>Auto Spin</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Paytable -->
+        <div class="paytable">
+            <h3>Paytable</h3>
+            <div class="paytable-content" id="paytableContent">
+                <!-- Will be filled by JavaScript -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Win Animation Modal -->
+    <div id="winModal" class="win-modal hidden">
+        <div class="win-content">
+            <div class="win-animation">
+                <i class="fas fa-trophy"></i>
+            </div>
+            <h2 id="winTitle">Congratulations! You Won!</h2>
+            <p id="winAmount">0</p>
+            <button id="closeWinModal" class="close-win-btn">Continue</button>
+        </div>
+    </div>
+
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <p>Loading game...</p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="config.js"></script>
+    <script src="game.js"></script>
+    <script src="effects.js"></script>
+    <script src="performance.js"></script>
+</body>
+</html>

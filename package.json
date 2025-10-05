@@ -1,0 +1,63 @@
+{
+  "name": "nexgame-casino",
+  "version": "1.0.0",
+  "description": "Professional Casino Slot Machine Game with RNG System and Admin Controls",
+  "main": "index.html",
+  "scripts": {
+    "start": "python simple_server.py",
+    "start-node": "node start_server.js",
+    "dev": "python simple_server.py",
+    "build": "echo 'No build process needed for this HTML5 game'",
+    "test": "echo 'No tests specified'",
+    "lint": "echo 'No linter configured'",
+    "serve": "npx http-server -p 8000 -c-1",
+    "deploy": "gh-pages -d ."
+  },
+  "keywords": [
+    "casino",
+    "slot-machine",
+    "gambling",
+    "rng",
+    "html5",
+    "javascript",
+    "game",
+    "admin-panel",
+    "free-spins",
+    "mobile",
+    "responsive"
+  ],
+  "author": "NexGame Development Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/nexgame-casino.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/nexgame-casino/issues"
+  },
+  "homepage": "https://yourusername.github.io/nexgame-casino/",
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "gh-pages": "^6.0.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ],
+  "files": [
+    "index.html",
+    "mobile_game.html",
+    "styles.css",
+    "game.js",
+    "effects.js",
+    "performance.js",
+    "config.js",
+    "assets/",
+    "README.md",
+    "LICENSE"
+  ]
+}

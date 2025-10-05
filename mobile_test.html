@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>NexGame Casino - Mobile Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: white;
+            min-height: 100vh;
+        }
+        
+        .test-container {
+            max-width: 400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .test-title {
+            font-size: 2rem;
+            color: #ffd700;
+            margin-bottom: 2rem;
+        }
+        
+        .test-item {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .test-button {
+            background: linear-gradient(45deg, #27ae60, #2ecc71);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            width: 100%;
+            margin: 1rem 0;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .test-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+        }
+        
+        .test-button:active {
+            transform: translateY(0);
+        }
+        
+        .test-info {
+            background: rgba(255, 215, 0, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .test-result {
+            margin-top: 1rem;
+            padding: 0.5rem;
+            border-radius: 5px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+        
+        .success {
+            background: rgba(46, 204, 113, 0.2);
+            border: 1px solid #2ecc71;
+            color: #2ecc71;
+        }
+        
+        .error {
+            background: rgba(231, 76, 60, 0.2);
+            border: 1px solid #e74c3c;
+            color: #e74c3c;
+        }
+        
+        .gesture-test {
+            background: rgba(142, 68, 173, 0.1);
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            border: 2px dashed rgba(142, 68, 173, 0.3);
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #9b59b6;
+        }
+        
+        .device-info {
+            background: rgba(52, 73, 94, 0.3);
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            font-family: monospace;
+            font-size: 0.9rem;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1 class="test-title">📱 اختبار الجوال</h1>
+        
+        <div class="test-item">
+            <h3>🎮 اختبار الأزرار</h3>
+            <button class="test-button" onclick="testButton()">اضغط هنا للاختبار</button>
+            <div id="buttonResult" class="test-result"></div>
+        </div>
+        
+        <div class="test-item">
+            <h3>👆 اختبار اللمس</h3>
+            <div class="gesture-test" id="gestureArea">
+                مسح هنا للاختبار
+            </div>
+            <div id="gestureResult" class="test-result"></div>
+        </div>
+        
+        <div class="test-item">
+            <h3>📐 اختبار التصميم المتجاوب</h3>
+            <div class="test-info">
+                <p>عرض الشاشة: <span id="screenWidth"></span>px</p>
+                <p>ارتفاع الشاشة: <span id="screenHeight"></span>px</p>
+                <p>نسبة العرض إلى الارتفاع: <span id="aspectRatio"></span></p>
+            </div>
+        </div>
+        
+        <div class="test-item">
+            <h3>🔧 معلومات الجهاز</h3>
+            <div class="device-info" id="deviceInfo">
+                جاري تحميل معلومات الجهاز...
+            </div>
+        </div>
+        
+        <div class="test-item">
+            <h3>🎰 اختبار اللعبة</h3>
+            <button class="test-button" onclick="openGame()">فتح اللعبة</button>
+            <div class="test-info">
+                <p>✅ التصميم متجاوب</p>
+                <p>✅ دعم اللمس</p>
+                <p>✅ تحسين الأداء</p>
+                <p>✅ دعم الجوال</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let gestureCount = 0;
+
+        // اختبار الأزرار
+        function testButton() {
+            const result = document.getElementById('buttonResult');
+            result.textContent = '✅ تم اختبار الأزرار بنجاح!';
+            result.className = 'test-result success';
+        }
+
+        // اختبار اللمس
+        const gestureArea = document.getElementById('gestureArea');
+        
+        gestureArea.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+            gestureArea.style.background = 'rgba(142, 68, 173, 0.3)';
+        });
+
+        gestureArea.addEventListener('touchend', (e) => {
+            const touchEndX = e.changedTouches[0].clientX;
+            const touchEndY = e.changedTouches[0].clientY;
+            
+            const deltaX = touchEndX - touchStartX;
+            const deltaY = touchEndY - touchStartY;
+            
+            gestureCount++;
+            const result = document.getElementById('gestureResult');
+            
+            if (Math.abs(deltaX) > 50 || Math.abs(deltaY) > 50) {
+                result.textContent = `✅ تم اكتشاف مسح! (${gestureCount}) - X: ${deltaX.toFixed(0)}, Y: ${deltaY.toFixed(0)}`;
+                result.className = 'test-result success';
+            } else {
+                result.textContent = `👆 لمس عادي (${gestureCount})`;
+                result.className = 'test-result';
+            }
+            
+            gestureArea.style.background = 'rgba(142, 68, 173, 0.1)';
+        });
+
+        // معلومات الشاشة
+        function updateScreenInfo() {
+            document.getElementById('screenWidth').textContent = window.innerWidth;
+            document.getElementById('screenHeight').textContent = window.innerHeight;
+            document.getElementById('aspectRatio').textContent = (window.innerWidth / window.innerHeight).toFixed(2);
+        }
+
+        // معلومات الجهاز
+        function updateDeviceInfo() {
+            const info = document.getElementById('deviceInfo');
+            const userAgent = navigator.userAgent;
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+            const isTouch = 'ontouchstart' in window;
+            
+            info.innerHTML = `
+                <strong>نوع الجهاز:</strong> ${isMobile ? 'جوال' : 'كمبيوتر'}<br>
+                <strong>دعم اللمس:</strong> ${isTouch ? 'نعم' : 'لا'}<br>
+                <strong>المتصفح:</strong> ${navigator.appName}<br>
+                <strong>الإصدار:</strong> ${navigator.appVersion}<br>
+                <strong>المنصة:</strong> ${navigator.platform}<br>
+                <strong>اللغة:</strong> ${navigator.language}<br>
+                <strong>الذاكرة:</strong> ${navigator.deviceMemory ? navigator.deviceMemory + 'GB' : 'غير متاح'}<br>
+                <strong>المعالجات:</strong> ${navigator.hardwareConcurrency || 'غير متاح'}
+            `;
+        }
+
+        // فتح اللعبة
+        function openGame() {
+            window.open('index.html', '_blank');
+        }
+
+        // تحديث المعلومات عند تغيير حجم الشاشة
+        window.addEventListener('resize', updateScreenInfo);
+        window.addEventListener('orientationchange', () => {
+            setTimeout(updateScreenInfo, 100);
+        });
+
+        // تهيئة الصفحة
+        document.addEventListener('DOMContentLoaded', () => {
+            updateScreenInfo();
+            updateDeviceInfo();
+            
+            // اختبار تلقائي للأزرار
+            setTimeout(() => {
+                const buttons = document.querySelectorAll('.test-button');
+                buttons.forEach(button => {
+                    button.addEventListener('touchstart', () => {
+                        button.style.transform = 'scale(0.95)';
+                    });
+                    button.addEventListener('touchend', () => {
+                        button.style.transform = 'scale(1)';
+                    });
+                });
+            }, 100);
+        });
+    </script>
+</body>
+</html>
